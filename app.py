@@ -2,6 +2,8 @@ import sys
 from PyQt5 import QtWidgets, uic
 import MySQLdb as mysql
 
+# TODO: next up add sign up funcionality
+
 db = mysql.connect(host="db4free.net", user="code_jammers", passwd="eb1bbafb", db="e_electricians")
 # the design
 login_form = "designe/login_form.ui"
@@ -32,18 +34,14 @@ class Home(QtWidgets.QMainWindow):
         self.home.welcome.setText('Welcome %s to your Home' % user)
         self.home.welcome.resize(150, 20)
 
-    # TODO: here the app shows but exits immediately because we don't run it in a loop
     def show_ui(self):
         self.home.show()
-        print('Shown Home Form')
 
     def disconnect(self):
-        print('called close ?')
         self.home.hide()
         self.login = Login()
         self.login.set_ui()
         self.login.show_ui()
-        print('closed')
 
 
 class Login(QtWidgets.QMainWindow):
@@ -117,7 +115,8 @@ class Login(QtWidgets.QMainWindow):
             # db.commit()
             cur.close()
         else:
-            print('error connecting')
+            QtWidgets.QMessageBox.critical(self, 'Error', 'Couldn\'t connect to database')
+            print('error connecting to database')
 
     def quit(self):
         raise SystemExit
