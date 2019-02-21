@@ -1,2 +1,2 @@
 # PyQt-Login-Test
-is Python Gui Application made to test PyQt5 and MySQL and learn
+is a Python Gui Application made to test PyQt5 and MySQL and basicly to learn and expirement
