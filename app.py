@@ -1,10 +1,12 @@
 import sys
 from PyQt5 import QtWidgets, uic
+from PyQt5.QtWidgets import QMessageBox as MBox
 import MySQLdb as mysql
 
 # TODO: next up add sign up funcionality
 
-db = mysql.connect(host="db4free.net", user="code_jammers", passwd="eb1bbafb", db="e_electricians")
+db = mysql.connect(host="db4free.net", user="code_jammers",
+                   passwd="eb1bbafb", db="e_electricians")
 # the design
 login_form = "designe/login_form.ui"
 Home_form = "designe/Home_form.ui"
@@ -93,14 +95,14 @@ class Login(QtWidgets.QMainWindow):
         if db.open:
             print('successfully connected to database')
             cur = db.cursor()
-            # cur.execute("SELECT * FROM Users")
-            cur.execute('SELECT * FROM Users WHERE username = %s and password = %s', (username, password))
+            cur.execute('SELECT * FROM Users WHERE username = %s '
+                        'and password = %s', (username, password))
             data = cur.fetchone()
             # for users in data:
-            if data != None:  # users[0] == username and users[1] == password:
+            if data is not None:
                 user = username
                 print('Hello [%s] You are logging in, successfully' % user)
-                QtWidgets.QMessageBox.about(self, 'Logged in', 'Hello [%s] Congrats you just logged in' % user)
+                MBox.about(self, 'Log in', 'Hello %s, you logged in' % user)
                 self.ui.password_input.setText('')
                 self.ui.username_input.setText('')
                 self.home = Home()
@@ -108,21 +110,22 @@ class Login(QtWidgets.QMainWindow):
                 self.home.show_ui()
                 self.ui.hide()
             else:
-                QtWidgets.QMessageBox.critical(self, 'Error', 'Wrong Username or Password')
+                MBox.critical(self, 'Error', 'Wrong Username or Password')
                 print('wrong username or password')
             # this was just a test to see if how to insert data to database
-            # cur.execute("INSERT IGNORE INTO Users(username,password) VALUES ('%s', '%s')" % (ur_username, ur_password))
+            # cur.execute("INSERT IGNORE INTO Users(username,password)
+            # VALUES ('%s', '%s')" % (ur_username, ur_password))
             # db.commit()
             cur.close()
         else:
-            QtWidgets.QMessageBox.critical(self, 'Error', 'Couldn\'t connect to database')
+            MBox.critical(self, 'Error', 'Couldn\'t connect to database')
             print('error connecting to database')
 
     def quit(self):
         raise SystemExit
 
     def about(self):
-        QtWidgets.QMessageBox.about(self, 'About', 'this is just a learning app made by yas19sin to learn from')
+        MBox.about(self, 'About', 'this is app was made to train and learn')
 
     def connected(self):
         return logged_in
