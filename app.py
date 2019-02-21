@@ -15,10 +15,9 @@ class Home(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Home, self).__init__(parent)
         self.ui = uic.loadUi(Home_form)
-        print('loaded that shit')
         self.ui.diconnect_btn.clicked.connect(self.disconnect)
 
-    # TODO: there is a bug here, this function does't do anything below because i think the ui doesn't load
+    # TODO: there is a bug here, this function does't do anything below because i "think" the ui doesn't load
     def init_ui(self, user):
         bar = self.ui.menubar
         File = bar.addMenu('File')
@@ -94,7 +93,8 @@ class Login(QtWidgets.QMainWindow):
                 user = username
                 print('Hello [%s] You are logging in, successfully' % user)
                 QtWidgets.QMessageBox.about(self, 'Logged in', 'Hello [%s] Congrats you just logged in' % user)
-                self.home = Home(self)
+                self.hide()
+                self.ex = Home(self)
                 self.home.init_ui(user)
                 self.home.show()
             else:
