@@ -12,12 +12,22 @@ user = 'Admin'
 
 class Home(QtWidgets.QMainWindow):
 
-    def __init__(self):
-        QtWidgets.QMainWindow.__init__(self)
+    def __init__(self, parent=None):
+        super(Home, self).__init__(parent)
         self.ui = uic.loadUi(Home_form)
+        print('loaded that shit')
         self.ui.diconnect_btn.clicked.connect(self.disconnect)
 
-    def init_ui(self):
+    # TODO: there is a bug here, this function does't do anything below because i think the ui doesn't load
+    def init_ui(self, user):
+        bar = self.ui.menubar
+        File = bar.addMenu('File')
+        disconnect_action = QtWidgets.QAction('Disconnect', self)
+        disconnect_action.setShortcut('Ctrl+D')
+        File.addAction(disconnect_action)
+        disconnect_action.triggered.connect(self.disconnect)
+
+        self.ui.setFixedSize(400, 600)
         self.ui.main_title.setText('Home [%s]' % user)
         self.ui.welcome.setText('Welcome to your Home')
 
@@ -25,13 +35,13 @@ class Home(QtWidgets.QMainWindow):
         self.show()
 
     def disconnect(self):
-        self.hide()
+        self.close()
 
 
 class Login(QtWidgets.QMainWindow):
 
-    def __init__(self):
-        QtWidgets.QMainWindow.__init__(self)
+    def __init__(self, parent=None):
+        super(Login, self).__init__(parent)
         self.ui = uic.loadUi(login_form)
         self.ui.connect_btn.clicked.connect(self.connect)
 
@@ -84,6 +94,9 @@ class Login(QtWidgets.QMainWindow):
                 user = username
                 print('Hello [%s] You are logging in, successfully' % user)
                 QtWidgets.QMessageBox.about(self, 'Logged in', 'Hello [%s] Congrats you just logged in' % user)
+                self.home = Home(self)
+                self.home.init_ui(user)
+                self.home.show()
             else:
                 QtWidgets.QMessageBox.critical(self, 'Error', 'Wrong Username or Password')
                 print('wrong username or password')
@@ -111,6 +124,5 @@ if __name__ == '__main__':
     Login_form.set_ui()
     Login_form.create_menu_bar()
     Login_form.show_ui()
-    home_form = Home()
 
     sys.exit(app.exec_())
