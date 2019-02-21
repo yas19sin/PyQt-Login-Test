@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>329</height>
+    <width>350</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QLabel" name="main_title">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>20</y>
+      <x>130</x>
+      <y>50</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -30,7 +30,7 @@
    <widget class="QLabel" name="welcome">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>100</x>
       <y>130</y>
       <width>47</width>
       <height>13</height>
@@ -43,8 +43,8 @@
    <widget class="QPushButton" name="diconnect_btn">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>210</y>
+      <x>120</x>
+      <y>190</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -59,7 +59,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>408</width>
+     <width>350</width>
      <height>21</height>
     </rect>
    </property>

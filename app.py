@@ -7,34 +7,43 @@ db = mysql.connect(host="db4free.net", user="code_jammers", passwd="eb1bbafb", d
 login_form = "designe/login_form.ui"
 Home_form = "designe/Home_form.ui"
 logged_in = False
-user = 'Admin'
+# user = 'Admin'
 
 
 class Home(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(Home, self).__init__(parent)
-        self.ui = uic.loadUi(Home_form)
-        self.ui.diconnect_btn.clicked.connect(self.disconnect)
+        self.home = uic.loadUi(Home_form)
+        self.home.diconnect_btn.clicked.connect(self.disconnect)
 
-    # TODO: there is a bug here, this function does't do anything below because i "think" the ui doesn't load
-    def init_ui(self, user):
-        bar = self.ui.menubar
+    def setHome(self, user):
+        bar = self.home.menubar
         File = bar.addMenu('File')
         disconnect_action = QtWidgets.QAction('Disconnect', self)
         disconnect_action.setShortcut('Ctrl+D')
         File.addAction(disconnect_action)
         disconnect_action.triggered.connect(self.disconnect)
 
-        self.ui.setFixedSize(400, 600)
-        self.ui.main_title.setText('Home [%s]' % user)
-        self.ui.welcome.setText('Welcome to your Home')
+        self.home.setFixedSize(350, 300)
+        self.home.diconnect_btn.setText('Disconnect')
+        self.home.main_title.setText('Home [%s]' % user)
+        self.home.main_title.resize(100, 20)
+        self.home.welcome.setText('Welcome %s to your Home' % user)
+        self.home.welcome.resize(150, 20)
 
-    def show_form(self):
-        self.show()
+    # TODO: here the app shows but exits immediately because we don't run it in a loop
+    def show_ui(self):
+        self.home.show()
+        print('Shown Home Form')
 
     def disconnect(self):
-        self.close()
+        print('called close ?')
+        self.home.hide()
+        self.login = Login()
+        self.login.set_ui()
+        self.login.show_ui()
+        print('closed')
 
 
 class Login(QtWidgets.QMainWindow):
@@ -47,9 +56,11 @@ class Login(QtWidgets.QMainWindow):
     def set_ui(self):
         self.ui.Logging_info.resize(300, 17)
         self.ui.title.resize(100, 10)
+        self.ui.title.setText('PyQt5 MySQL Test')
         self.ui.Logging_info.setText('Welcome, Please Login')
         self.ui.setFixedSize(470, 230)
         self.ui.password_input.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.create_menu_bar()
 
     def create_menu_bar(self):
         bar = self.ui.menuBar
@@ -79,7 +90,6 @@ class Login(QtWidgets.QMainWindow):
 
     # just a check for now nothing too important
     def connect(self):
-        global user
         username = self.ui.username_input.text()
         password = self.ui.password_input.text()
         if db.open:
@@ -93,10 +103,12 @@ class Login(QtWidgets.QMainWindow):
                 user = username
                 print('Hello [%s] You are logging in, successfully' % user)
                 QtWidgets.QMessageBox.about(self, 'Logged in', 'Hello [%s] Congrats you just logged in' % user)
-                self.hide()
-                self.ex = Home(self)
-                self.home.init_ui(user)
-                self.home.show()
+                self.ui.password_input.setText('')
+                self.ui.username_input.setText('')
+                self.home = Home()
+                self.home.setHome(user=user)
+                self.home.show_ui()
+                self.ui.hide()
             else:
                 QtWidgets.QMessageBox.critical(self, 'Error', 'Wrong Username or Password')
                 print('wrong username or password')
@@ -122,7 +134,7 @@ if __name__ == '__main__':
 
     Login_form = Login()
     Login_form.set_ui()
-    Login_form.create_menu_bar()
+    # Login_form.create_menu_bar()
     Login_form.show_ui()
 
     sys.exit(app.exec_())
